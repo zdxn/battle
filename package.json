@@ -1,0 +1,13 @@
+{
+  "name": "battle-arena",
+  "version": "1.0.0",
+  "description": "A multiplayer browser-based battle arena game",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+    "install-all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "typescript": "^5.0.4"
+  }
+}
