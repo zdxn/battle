@@ -1,7 +1,7 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import jwt from '@fastify/jwt';
-import websocket from '@fastify/websockets';
+import websocket from '@fastify/websocket';
 import dotenv from 'dotenv';
 import { setupRoutes } from './routes.js';
 import { setupWebSocket } from './websocket.js';
