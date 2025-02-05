@@ -10,27 +10,15 @@ RUN apt-get update && apt-get install -y \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-COPY package*.json ./
-
-# Force rebuild of bcrypt
-RUN npm install bcrypt --build-from-source
-
-# Install other dependencies
-RUN npm install
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
-
-WORKDIR /app
-
 # Copy package files
 COPY package*.json ./
 
-# Install production dependencies
-RUN npm install --production
+# Clear npm cache and remove any existing node_modules
+RUN npm cache clean --force && \
+    rm -rf node_modules
+
+# Install dependencies and rebuild bcrypt
+RUN npm install --build-from-source
 
 # Copy source code
 COPY . .
