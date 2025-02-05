@@ -3,6 +3,29 @@ FROM node:18
 
 WORKDIR /app
 
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY package*.json ./
+
+# Force rebuild of bcrypt
+RUN npm install bcrypt --build-from-source
+
+# Install other dependencies
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+
+WORKDIR /app
+
 # Copy package files
 COPY package*.json ./
 
