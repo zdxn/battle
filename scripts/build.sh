@@ -5,13 +5,12 @@ set -e
 
 echo "🏗️ Building Battle Arena..."
 
-# Build backend
-echo "📦 Building backend..."
+# Install backend dependencies
+echo "📦 Installing backend dependencies..."
 cd backend
 npm install
-npm run build
 
-# Build frontend
+# Install frontend dependencies and build
 echo "🎨 Building frontend..."
 cd ../frontend
 npm install
@@ -22,4 +21,4 @@ echo "🐳 Building Docker images..."
 cd ..
 docker-compose build
 
-echo "✅ Build complete! Run 'docker-compose up' to start the application."
+echo "✅ Build complete!"

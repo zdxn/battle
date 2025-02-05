@@ -1,31 +1,16 @@
-# Build stage
-FROM node:18-alpine as builder
+# Production stage
+FROM node:18-alpine
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install production dependencies
+RUN npm install --production
 
 # Copy source code
 COPY . .
-
-# Build TypeScript
-RUN npm run build
-
-# Production stage
-FROM node:18-alpine
-
-WORKDIR /app
-
-# Copy package files and install production dependencies
-COPY package*.json ./
-RUN npm install --production
-
-# Copy built files from builder
-COPY --from=builder /app/dist ./dist
 
 # Create .env file from environment variables
 RUN echo "PORT=8000" >> .env \
@@ -35,4 +20,4 @@ RUN echo "PORT=8000" >> .env \
 
 EXPOSE 8000
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "src/index.js"]

@@ -29,36 +29,37 @@ else
     echo "Warning: Redis is not installed locally"
 fi
 
-# Wait for databases to start
-sleep 5
-
-# Start backend in development mode
-echo "Starting backend..."
-cd backend || handle_error "Backend directory not found"
+# Start backend in background
+echo "Starting backend server..."
+cd backend
+npm install
 npm run dev &
 BACKEND_PID=$!
 
-# Start frontend in development mode
-echo "Starting frontend..."
-cd ../frontend || handle_error "Frontend directory not found"
+# Start frontend in background
+echo "Starting frontend server..."
+cd ../frontend
+npm install
 npm start &
 FRONTEND_PID=$!
 
-echo "Development environment is running!"
-echo "Backend: http://localhost:8000"
-echo "Frontend: http://localhost:3000"
-
-# Handle cleanup on script termination
+# Function to clean up background processes
 cleanup() {
-    echo "Shutting down services..."
+    echo "Cleaning up..."
     kill $BACKEND_PID 2>/dev/null
     kill $FRONTEND_PID 2>/dev/null
-    redis-cli shutdown 2>/dev/null
-    mongod --shutdown 2>/dev/null
+    
+    if command_exists mongod; then
+        mongod --shutdown
+    fi
+    
+    if command_exists redis-cli; then
+        redis-cli shutdown
+    fi
 }
 
 trap cleanup EXIT
 
 # Wait for any key to terminate
 echo "Press any key to stop all services..."
-read -n 1
+read -n 1 -s
