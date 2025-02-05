@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Item } from '../models/item';
+import { Item } from '../models/item.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -52,27 +52,27 @@ const initialItems = [
     type: "armor",
     rarity: "uncommon",
     level: 5,
-    price: 300,
+    price: 250,
     stats: {
-      defense: 15,
-      vitality: 3
+      defense: 12,
+      vitality: 2
     },
     requirements: {
-      level: 5,
-      strength: 15
+      level: 5
     }
   },
   
   // Accessories
   {
     name: "Lucky Charm",
-    description: "Brings good fortune in battle",
+    description: "A small trinket that brings good fortune",
     type: "accessory",
     rarity: "uncommon",
     level: 1,
     price: 150,
     stats: {
-      dexterity: 2
+      dexterity: 2,
+      intelligence: 1
     }
   },
   
@@ -84,22 +84,27 @@ const initialItems = [
     rarity: "common",
     level: 1,
     price: 25,
-    effects: [{
-      type: "heal",
-      value: 50
-    }]
+    effects: [
+      {
+        type: "heal",
+        value: 50
+      }
+    ]
   },
   {
-    name: "Mana Potion",
-    description: "Restores 25 MP",
+    name: "Strength Elixir",
+    description: "Temporarily increases strength",
     type: "consumable",
-    rarity: "common",
-    level: 1,
-    price: 25,
-    effects: [{
-      type: "restore_mana",
-      value: 25
-    }]
+    rarity: "uncommon",
+    level: 5,
+    price: 100,
+    effects: [
+      {
+        type: "buff",
+        value: 10,
+        duration: 300 // 5 minutes
+      }
+    ]
   }
 ];
 
@@ -117,7 +122,7 @@ async function seedDatabase() {
     await Item.insertMany(initialItems);
     console.log('Inserted initial items');
 
-    console.log('Database seeded successfully!');
+    console.log('Database seeded successfully');
     process.exit(0);
   } catch (error) {
     console.error('Error seeding database:', error);

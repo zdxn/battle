@@ -40,7 +40,6 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   character: { type: characterSchema, required: true },
   createdAt: { type: Date, default: Date.now },
-  // New fields for enhanced chat and user features
   role: { 
     type: String, 
     enum: ['user', 'moderator', 'admin'], 
@@ -49,30 +48,18 @@ const userSchema = new mongoose.Schema({
   rank: {
     title: { type: String, default: 'Novice' },
     color: { type: String, default: '#FFFFFF' },
-    priority: { type: Number, default: 0 }
   },
   achievements: [achievementSchema],
-  activeFlair: { type: String, default: null }, // Reference to achievement.icon
-  unreadMessages: { type: Number, default: 0 },
-  lastSeen: { type: Date },
+  lastOnline: { type: Date },
+  status: {
+    type: String,
+    enum: ['online', 'offline', 'in_battle', 'in_shop'],
+    default: 'offline'
+  },
   settings: {
-    chatColor: { type: String, default: '#FFFFFF' },
-    notifications: {
-      privateMessages: { type: Boolean, default: true },
-      challenges: { type: Boolean, default: true },
-      achievements: { type: Boolean, default: true }
-    }
+    notifications: { type: Boolean, default: true },
+    theme: { type: String, default: 'light' },
   }
-});
-
-// Virtual for checking if user is admin
-userSchema.virtual('isAdmin').get(function() {
-  return this.role === 'admin';
-});
-
-// Virtual for checking if user is moderator or higher
-userSchema.virtual('isModerator').get(function() {
-  return ['moderator', 'admin'].includes(this.role);
 });
 
 export const User = mongoose.model('User', userSchema);

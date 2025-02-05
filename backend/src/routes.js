@@ -1,11 +1,10 @@
-import { FastifyInstance } from 'fastify';
-import { authRoutes } from './routes/auth';
-import { characterRoutes } from './routes/character';
-import { storeRoutes } from './routes/store';
-import { leaderboardRoutes } from './routes/leaderboard';
-import { chatRoutes } from './routes/chat';
+import { authRoutes } from './routes/auth.js';
+import { characterRoutes } from './routes/character.js';
+import { storeRoutes } from './routes/store.js';
+import { leaderboardRoutes } from './routes/leaderboard.js';
+import { chatRoutes } from './routes/chat.js';
 
-export const setupRoutes = (fastify: FastifyInstance) => {
+export const setupRoutes = (fastify) => {
   // Register route groups
   fastify.register(authRoutes, { prefix: '/api/auth' });
   fastify.register(characterRoutes, { prefix: '/api/character' });

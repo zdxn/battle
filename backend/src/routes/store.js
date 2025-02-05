@@ -1,5 +1,4 @@
-import { FastifyInstance, FastifyRequest } from 'fastify';
-import { User } from '../models/user';
+import { User } from '../models/user.js';
 
 const STORE_ITEMS = [
   {
@@ -29,7 +28,7 @@ const STORE_ITEMS = [
   // Add more items as needed
 ];
 
-export const storeRoutes = async (fastify: FastifyInstance) => {
+export const storeRoutes = async (fastify) => {
   // Middleware to verify JWT token
   fastify.addHook('preHandler', async (request, reply) => {
     try {
@@ -45,7 +44,7 @@ export const storeRoutes = async (fastify: FastifyInstance) => {
   });
 
   // Purchase item
-  fastify.post('/purchase/:itemId', async (request: FastifyRequest<{ Params: { itemId: string } }>) => {
+  fastify.post('/purchase/:itemId', async (request) => {
     const { itemId } = request.params;
     const user = await User.findById(request.user.id);
     
@@ -62,20 +61,15 @@ export const storeRoutes = async (fastify: FastifyInstance) => {
       throw { statusCode: 400, message: 'Not enough gold' };
     }
 
-    // Add item to inventory and deduct gold
-    user.character.inventory.push({
-      name: item.name,
-      type: item.type,
-      stats: item.stats,
-      equipped: false,
-    });
+    // Update user's gold and inventory
     user.character.gold -= item.price;
+    user.character.inventory.push(item);
 
     await user.save();
-
-    return {
+    return { 
       message: 'Item purchased successfully',
-      character: user.character,
+      gold: user.character.gold,
+      item
     };
   });
 };

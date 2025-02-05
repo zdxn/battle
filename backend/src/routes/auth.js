@@ -1,14 +1,8 @@
-import { FastifyInstance, FastifyRequest } from 'fastify';
 import bcrypt from 'bcrypt';
-import { User } from '../models/user';
+import { User } from '../models/user.js';
 
-interface LoginBody {
-  username: string;
-  password: string;
-}
-
-export const authRoutes = async (fastify: FastifyInstance) => {
-  fastify.post('/register', async (request: FastifyRequest<{ Body: LoginBody }>) => {
+export const authRoutes = async (fastify) => {
+  fastify.post('/register', async (request) => {
     const { username, password } = request.body;
 
     // Check if user exists
@@ -48,7 +42,7 @@ export const authRoutes = async (fastify: FastifyInstance) => {
     return { token };
   });
 
-  fastify.post('/login', async (request: FastifyRequest<{ Body: LoginBody }>) => {
+  fastify.post('/login', async (request) => {
     const { username, password } = request.body;
 
     // Find user
@@ -58,8 +52,8 @@ export const authRoutes = async (fastify: FastifyInstance) => {
     }
 
     // Check password
-    const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) {
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) {
       throw { statusCode: 401, message: 'Invalid credentials' };
     }
 
