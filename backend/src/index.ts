@@ -1,14 +1,14 @@
-import Fastify from 'fastify';
-import cors from '@fastify/cors';
-import jwt from '@fastify/jwt';
-import websocket from '@fastify/websockets';
-import { config } from 'dotenv';
-import { setupRoutes } from './routes';
-import { setupWebSocket } from './websocket';
-import { connectDB } from './db';
+const Fastify = require('fastify');
+const cors = require('@fastify/cors');
+const jwt = require('@fastify/jwt');
+const websocket = require('@fastify/websockets');
+const dotenv = require('dotenv');
+const setupRoutes = require('./routes.js');
+const setupWebSocket = require('./websocket.js');
+const connectDB = require('./db.js');
 
 // Load environment variables
-config();
+dotenv.config();
 
 const start = async () => {
   try {

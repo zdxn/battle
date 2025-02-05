@@ -7,7 +7,6 @@
     "install-all": "npm install && cd frontend && npm install && cd ../backend && npm install"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0",
-    "typescript": "^5.0.4"
+    "concurrently": "^8.2.0"
   }
 }
